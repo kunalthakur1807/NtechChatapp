@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-3 page-section bg-info">
+    <!-- <button class="btn btn-primary w-100 ms-1 mt-2">New Chat</button> -->
+
+    <div
+      *ngFor="let friend of friends"
+      class="w-100 p-2 d-flex position-relative"
+      style="height: 70px"
+      (click)="SidebarUserClicked(friend)"
+    >
+      <div
+        class="rounded-circle bg-secondary mt-1 d-flex align-items-center justify-content-center"
+        style="height: 50px; width: 50px"
+      >
+        <h2 class="text-center">{{ friend.name[0] }}</h2>
+      </div>
+      <div
+        class="flex-grow-1 border-secondary border-bottom text-white h-100 ms-3 me-0 d-flex align-items-center"
+      >
+        <h5 class="">{{ friend.name }}</h5>
+        <!-- <p class="mt-0 p-0"><small>this is first message</small></p> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-9 page-section" *ngIf="selectedUserid.name">
+    <div class="d-flex flex-column w-100 page-section">
+      <div class="shadow w-100 bg-dark">
+        <h3 class="text-light p-2">
+          {{ selectedUserid.name }}
+        </h3>
+      </div>
+      <div class="flex-grow-1 w-100 overflow-hidden">
+        <div
+          class="bg-secondary h-100 d-flex flex-column-reverse overflow-scroll"
+        >
+          <div
+            *ngFor="let message of messages"
+            class="{{
+              message.from == currentUserId
+                ? 'align-self-end'
+                : 'align-self-start'
+            }}"
+          >
+            <p
+              *ngIf="
+                (message.to == selectedUserid._id &&
+                  message.from == currentUserId) ||
+                (message.to == currentUserId &&
+                  message.from == selectedUserid._id)
+              "
+              class="text-right bg-light rounded mx-2 my-1 px-2 py-1"
+            >
+              {{ message.message }}
+
+              <!-- <small class="text-secondary">{{ message.time }}</small> -->
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 d-flex mb-2">
+        <input
+          class="from-control w-100"
+          type="text"
+          name="message"
+          id="message"
+          #message
+        />
+        <button class="btn btn-primary ms-2 me-2" (click)="sendMessage()">
+          send
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-9 page-section justify-content-center align-items-center"
+    *ngIf="!selectedUserid.name"
+  >
+    <h1 class="text-center align-items-center bg-secondary text-dark">Select Name to start chat</h1>
+  </div>
+</div>
